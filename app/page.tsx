@@ -3,7 +3,8 @@ import MatrixRain from '@/components/MatrixRain';
 import StatCard from '@/components/StatCard';
 import SniperRow from '@/components/SniperRow';
 
-export const revalidate = 3600;
+// Don't statically generate at build time - ISR on first request
+export const dynamic = 'force-dynamic';
 
 export default async function HomePage() {
   const stats = await analyzeSnipers();
@@ -97,6 +98,7 @@ export default async function HomePage() {
                     <th>ACCOUNT</th>
                     <th>SNIPES</th>
                     <th>AVG TIME</th>
+                    <th>FASTEST</th>
                     <th>XPR DEPLOYED</th>
                     <th>THREAT</th>
                     <th></th>

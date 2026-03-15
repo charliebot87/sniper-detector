@@ -19,9 +19,15 @@ function getRankColor(rank: number): string {
   return '#555';
 }
 
+const THREAT_CONFIG = {
+  BOT: { label: '🤖 BOT', color: '#ff3333' },
+  INSTANT: { label: '⚡ INSTANT', color: '#ff8800' },
+  FAST: { label: '🏃 FAST', color: '#ffff00' },
+  HUMAN: { label: '👤 HUMAN', color: '#00ff88' },
+} as const;
+
 export default function SniperRow({ sniper, rank }: SniperRowProps) {
-  const threatLevel = sniper.snipeCount >= 20 ? 'EXTREME' : sniper.snipeCount >= 10 ? 'HIGH' : sniper.snipeCount >= 5 ? 'MED' : 'LOW';
-  const threatColor = sniper.snipeCount >= 20 ? '#ff3333' : sniper.snipeCount >= 10 ? '#ff8800' : sniper.snipeCount >= 5 ? '#ffff00' : '#00ff88';
+  const threat = THREAT_CONFIG[sniper.threatLevel];
 
   return (
     <tr>
@@ -50,6 +56,11 @@ export default function SniperRow({ sniper, rank }: SniperRowProps) {
         </span>
       </td>
       <td>
+        <span style={{ color: '#ff8800', fontWeight: 'bold' }}>
+          {formatTime(sniper.fastestBuyTimeSeconds)}
+        </span>
+      </td>
+      <td>
         <span style={{ color: '#aaa' }}>
           {sniper.totalXprInvested.toLocaleString(undefined, { maximumFractionDigits: 0 })} XPR
         </span>
@@ -58,12 +69,12 @@ export default function SniperRow({ sniper, rank }: SniperRowProps) {
         <span
           className="px-2 py-0.5 rounded text-xs font-bold"
           style={{
-            color: threatColor,
-            border: `1px solid ${threatColor}`,
-            background: `${threatColor}11`,
+            color: threat.color,
+            border: `1px solid ${threat.color}`,
+            background: `${threat.color}11`,
           }}
         >
-          {threatLevel}
+          {threat.label}
         </span>
       </td>
       <td>
